@@ -4,12 +4,14 @@ I have a set of potential values or only one when fixed
 "
 Class {
 	#name : #SudokuCell,
-	#superclass : #Object,
+	#superclass : #SimpleButtonMorph,
 	#instVars : [
 		'row',
 		'column',
-		'poss',
-		'cube'
+		'possible',
+		'cube',
+		'position',
+		'size'
 	],
 	#classInstVars : [
 		'initArray'
@@ -35,7 +37,9 @@ SudokuCell class >> newAt: aRow At: aColumn [
 SudokuCell >> At: aRow At: aColumn [ 
 	row := aRow.
 	column := aColumn.
-	cube := nil
+	cube := nil.
+	position := (row * size)@(column * size).
+	self color: (row even ifTrue: Color red ifFalse: Color blue)
 
 ]
 
@@ -43,5 +47,6 @@ SudokuCell >> At: aRow At: aColumn [
 SudokuCell >> initialize [ 
 	"initialization of the cell with an array from 1 to 9"
 	super initialize .
-	poss := OrderedCollection newFrom: (1 to: 9)
+	possible := OrderedCollection newFrom: (1 to: 9).
+	size := 50
 ]

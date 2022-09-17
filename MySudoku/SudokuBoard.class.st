@@ -14,18 +14,28 @@ Class {
 { #category : #initialization }
 SudokuBoard >> initialize [ 
 	"initialization of the sudoku board"
-	| l b |
+	| l b c r |
 	super initialize .
 	bounds := (900@350 extent: 500@500).
 	color := Color lightGray .
 	"cells := Array2D new: 9 tabulate: [  :i :j | self newCellAt: i At: j ]"
 	
-	self layoutPolicy: TableLayout new.
+"	self layoutPolicy: TableLayout new.
 	b := true.
 	9 timesRepeat: [ l :=  Morph new layoutPolicy: RowLayout new; hResizing: #spaceFill; yourself.
 		9 timesRepeat: [ l addMorph: (Morph new color: (b ifTrue: [Color yellow] ifFalse: Color green ) ).
 			b := b not].
 		self addMorph: l].
+"
+	r := 0.
+	9 timesRepeat: [
+		c := 0. 
+		9 timesRepeat: [
+			l := SudokuCell newAt: r At: c.
+			self addMorph: l.
+			c := c+1 ].
+		r := r+1
+	].
 	self openInWorld.
 
 ]
