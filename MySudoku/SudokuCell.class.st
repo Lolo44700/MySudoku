@@ -38,7 +38,6 @@ SudokuCell >> At: aRow At: aColumn [
 	row := aRow.
 	column := aColumn.
 	cube := nil.
-	position := (row * size)@(column * size).
 	self color: (row even ifTrue: Color red ifFalse: Color blue)
 
 ]

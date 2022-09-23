@@ -6,7 +6,8 @@ Class {
 	#name : #SudokuBoard,
 	#superclass : #BorderedMorph,
 	#instVars : [
-		'cells'
+		'cells',
+		'blocks'
 	],
 	#category : #MySudoku
 }
@@ -14,28 +15,26 @@ Class {
 { #category : #initialization }
 SudokuBoard >> initialize [ 
 	"initialization of the sudoku board"
-	| l b c r |
+	| c cCounter largeurC marge |
 	super initialize .
 	bounds := (900@350 extent: 500@500).
 	color := Color lightGray .
-	"cells := Array2D new: 9 tabulate: [  :i :j | self newCellAt: i At: j ]"
-	
-"	self layoutPolicy: TableLayout new.
-	b := true.
-	9 timesRepeat: [ l :=  Morph new layoutPolicy: RowLayout new; hResizing: #spaceFill; yourself.
-		9 timesRepeat: [ l addMorph: (Morph new color: (b ifTrue: [Color yellow] ifFalse: Color green ) ).
-			b := b not].
-		self addMorph: l].
-"
-	r := 0.
-	9 timesRepeat: [
-		c := 0. 
-		9 timesRepeat: [
-			l := SudokuCell newAt: r At: c.
-			self addMorph: l.
-			c := c+1 ].
-		r := r+1
-	].
+
+	cCounter := 0.
+	marge := 8 .
+	largeurC := ( self width - (2 * marge) ) / 9.
+
+"	Construct the 81 cells "	
+	81 timesRepeat: [ 
+			c := SudokuCell newAt: (cCounter % 9)  At: (cCounter // 9).
+			c labelString: cCounter printString .
+			c bounds: ((bounds topLeft + (marge@marge)  extent: largeurC@largeurC )) .
+			c topLeft: (c topLeft) + ((largeurC * (cCounter % 9))@(largeurC  * (cCounter // 9))).
+			c color: ((( cCounter // 3 ) + (cCounter // 9 ) + (cCounter // 27)) odd ifTrue: Color lightBlue ifFalse: Color lightGreen ) .
+			self addMorph: c.
+			cCounter := cCounter + 1.
+		 ].
+
 	self openInWorld.
 
 ]
